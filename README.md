@@ -16,7 +16,7 @@ npm run start
 
 **_Note: To add a new task to to todos just type in the name of the task and press enter_**
 
-## List of Commands
+## List of Endpoints
 
 ```bash
 'GET - {{baseUrl}}/api/v1/rooms-types' - fetch all room types
