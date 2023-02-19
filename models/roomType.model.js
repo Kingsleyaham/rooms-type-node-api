@@ -9,6 +9,7 @@ const roomTypeSchema = new Schema(
       required: true,
       lowercase: true,
       unique: true,
+      trim: true,
     },
   },
   {
@@ -16,6 +17,6 @@ const roomTypeSchema = new Schema(
   }
 );
 
-const RoomTypes = mongoose.model(DATABASES.ROOMTYPE, roomTypeSchema);
+const RoomType = mongoose.model(DATABASES.ROOMTYPE, roomTypeSchema);
 
-module.exports = RoomTypes;
+module.exports = RoomType;

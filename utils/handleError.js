@@ -13,8 +13,9 @@ const handleError = (error) => {
     if (error.message.includes("name")) path = "name";
     if (error.message.includes("price")) path = "price";
     if (error.message.includes("roomType")) path = "roomType";
+    if (error.message.includes("email")) path = "email";
 
-    errorMsg = `${path} is required`;
+    errorMsg = `${path} error`;
   }
 
   return errorMsg;

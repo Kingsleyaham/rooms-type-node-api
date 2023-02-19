@@ -3,8 +3,8 @@ const {
   Types: { ObjectId },
 } = mongoose;
 const { MESSAGES } = require("../config/constants");
-const Room = require("../models/Room");
-const RoomTypes = require("../models/RoomType");
+const Room = require("../models/room.model");
+const RoomType = require("../models/roomType.model");
 const handleError = require("../utils/handleError");
 
 // utility functions
@@ -17,7 +17,7 @@ const getObjectIdByRoomName = async (roomType) => {
   try {
     if (isValidObjectId(roomType)) return roomType;
 
-    const roomId = await RoomTypes.findOne({ name: roomType }).select("_id");
+    const roomId = await RoomType.findOne({ name: roomType }).select("_id");
 
     if (!roomId) {
       const randomId = mongoose.Types.ObjectId();
@@ -34,7 +34,7 @@ const getObjectIdByRoomName = async (roomType) => {
 
 const roomTypeExist = async (roomTypeId, res) => {
   try {
-    const typeExist = await RoomTypes.findById(roomTypeId);
+    const typeExist = await RoomType.findById(roomTypeId);
     return typeExist;
   } catch (error) {
     const errMsg = handleError(error);
@@ -57,6 +57,13 @@ const dbQueryByFilter = async (search, roomType, minPrice, maxPrice) => {
 //-------------------------------------------------------------------//
 
 const fetchRoomsBySearchParams = async (req, res) => {
+  if (!req.isAuthenticated) {
+    return res.status(401).json({
+      success: 0,
+      message: "you are not authenticated please login to access route",
+    });
+  }
+
   const { search, roomType, minPrice, maxPrice } = req.query;
 
   const query = await dbQueryByFilter(search, roomType, minPrice, maxPrice);
@@ -90,7 +97,7 @@ const create = async (req, res) => {
   }
 
   try {
-    const newRoom = await Room.create({ name, roomType, price });
+    await Room.create({ name, roomType, price });
     res.status(201).json({ success: 1, message: MESSAGES.CREATED });
   } catch (error) {
     const errMsg = handleError(error);
@@ -103,7 +110,7 @@ const updateRoom = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const room = await Room.findByIdAndUpdate(id, { ...req.body });
+    await Room.findByIdAndUpdate(id, { ...req.body });
 
     res.status(200).json({ success: 1, message: MESSAGES.UPDATED });
   } catch (error) {
@@ -116,7 +123,7 @@ const deleteRoom = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const room = await Room.findByIdAndDelete(id, { ...req.body });
+    await Room.findByIdAndDelete(id);
 
     res.status(200).json({ success: 1, message: MESSAGES.DELETED });
   } catch (error) {
