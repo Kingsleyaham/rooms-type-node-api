@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const constants = require("./config/constants");
 const router = require("./routes/");
-
 const { MESSAGES, DATABASE_URL } = require("./config/constants");
 
 const app = express();
@@ -16,17 +15,17 @@ const host = process.env.HOST || "localhost";
 
 mongoose.set("strictQuery", true);
 
-// mongo db database connection
+// connect to db then start app
 mongoose
   .connect(DATABASE_URL)
-  .then((result) =>
+  .then(() =>
     app.listen(port, () => {
       console.log(`server running at http://${host}:${port}`);
     })
   )
   .catch((err) => console.log(err));
 
-// third-party middlewarew
+// third-party middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());

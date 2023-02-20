@@ -5,12 +5,23 @@ const userRoute = require("./user");
 const authRoute = require("./auth");
 const { requireAuth } = require("../middlewares/auth.middleware");
 const { requireAuthorization } = require("../middlewares/roleAuth.middleware");
+const {
+  validateUser,
+  validateRoom,
+  validateRoomType,
+} = require("../middlewares/validation/validate.middleware");
 
 const router = Router();
 
-router.use("/rooms", requireAuth, roomRoute);
-router.use("/rooms-types", requireAuth, requireAuthorization, roomTypeRoute);
+router.use("/rooms", validateRoom, requireAuth, roomRoute);
+router.use(
+  "/rooms-types",
+  requireAuth,
+  requireAuthorization,
+  validateRoomType,
+  roomTypeRoute
+);
 router.use("/user", userRoute);
-router.use("/auth", authRoute);
+router.use("/auth", validateUser, authRoute);
 
 module.exports = router;

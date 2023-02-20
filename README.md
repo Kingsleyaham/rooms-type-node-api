@@ -14,13 +14,18 @@ or
 npm run start
 ```
 
-**_Note: To add a new task to to todos just type in the name of the task and press enter_**
-
 ## List of Endpoints
 
 ```bash
+'POST - {{baseUrl}}/api/v1/auth/register' - create a new user
+'POST - {{baseUrl}}/api/v1/auth/login' - user login route
+'GET - {{baseUrl}}/api/v1/rooms-types' - logout user
+
+
 'GET - {{baseUrl}}/api/v1/rooms-types' - fetch all room types
 'POST - {{baseUrl}}/api/v1/rooms-types' - stores roomtype in this format { “_id”: ObjectId, “name”: string}
+'PATCH - {{baseUrl}}/api/v1/rooms-types/{roomId}' - endpoint for editing a room type using its id
+'DELETE - {{baseUrl}}/api/v1/rooms-types/{roomId}' - endpoint or deleting a room type using its id
 
 'GET -  {{baseUrl}}/api/v1/rooms?search={searchRoomNameMatch}&roomType={searchRoomTypeNameMatch}&minPrice={searchRoomMinimumPriceMatch}&maxPrice={searchRoomMaximumPriceMatch}' - Available queries are the search, roomType, minPrice& maxPrice, which are meant to be optional queries on the db unless when the user passes them on the endpoint. Note that when only maxPrice is passed, consider the minPrice 0.
 'POST - {{baseUrl}}/api/v1/rooms' - stores rooms in this format {“_id: ObjectId, “name”: string, “roomType”: ObjectId, “price”: number}
@@ -29,3 +34,7 @@ npm run start
 'GET - {{baseUrl}}/api/v1/rooms/{roomId}' - endpoint for fetching a room using its id
 
 ```
+
+**_Note: You have to be authenticated i.e login before you can create, edit and delete rooms_**
+
+**_Note: Only an admin can add add, edit and delete room types_**

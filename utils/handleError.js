@@ -1,24 +1,36 @@
+const removeQuoteFromString = require("./removeQuote");
+
 const handleError = (error) => {
-  let errorMsg = "an error occured";
+  let errorMsg = "error validating request";
 
   if (error.name === "MongoServerError" && error.code === 11000) {
     errorMsg = "resource already exist";
   }
   if (error.name === "CastError") {
-    errorMsg = `invalid ${error.kind}`;
+    errorMsg = error.message;
   }
+
+  if (error.type === "string.email") {
+    errorMsg = "email must be a valid email";
+  }
+  if (error.type === "any.required") {
+    errorMsg = `${error.path[0]} is required`;
+  }
+
+  if (error.type === "string.min") {
+    errorMsg = "password length must be at least 8 characters long";
+  }
+  if (error.type.includes(".base")) {
+    errorMsg = error.message;
+  }
+
   if (error.name === "ValidationError") {
-    let path = "";
-
-    if (error.message.includes("name")) path = "name";
-    if (error.message.includes("price")) path = "price";
-    if (error.message.includes("roomType")) path = "roomType";
-    if (error.message.includes("email")) path = "email";
-
-    errorMsg = `${path} error`;
+    Object.keys(error.errors).forEach((key) => {
+      errorMsg = error.errors[key].message;
+    });
   }
 
-  return errorMsg;
+  return removeQuoteFromString(errorMsg);
 };
 
 module.exports = handleError;

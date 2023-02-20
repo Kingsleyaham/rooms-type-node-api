@@ -11,9 +11,13 @@ const roomSchema = new Schema(
       unique: true,
       trim: true,
     },
-    roomType: { type: Schema.Types.ObjectId, ref: "RoomType", required: true },
+    roomType: {
+      type: Schema.Types.ObjectId,
+      ref: "RoomType",
+      required: [true, "Room type is required"],
+    },
 
-    price: { type: Number, required: true },
+    price: { type: Number, required: [true, "Price is required"] },
   },
   {
     timestamps: true,

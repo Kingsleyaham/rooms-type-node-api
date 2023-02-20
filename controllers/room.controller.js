@@ -26,8 +26,8 @@ const getObjectIdByRoomName = async (roomType) => {
     }
 
     return roomId._id;
-  } catch (error) {
-    const errMsg = handleError(error);
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
@@ -36,9 +36,9 @@ const roomTypeExist = async (roomTypeId, res) => {
   try {
     const typeExist = await RoomType.findById(roomTypeId);
     return typeExist;
-  } catch (error) {
-    const errMsg = handleError(error);
-    res.status(401).json({ success: 0, message: errMsg });
+  } catch (err) {
+    const errMsg = handleError(err);
+    res.status(401).json({ error: errMsg });
   }
 };
 
@@ -57,22 +57,15 @@ const dbQueryByFilter = async (search, roomType, minPrice, maxPrice) => {
 //-------------------------------------------------------------------//
 
 const fetchRoomsBySearchParams = async (req, res) => {
-  if (!req.isAuthenticated) {
-    return res.status(401).json({
-      success: 0,
-      message: "you are not authenticated please login to access route",
-    });
-  }
-
   const { search, roomType, minPrice, maxPrice } = req.query;
 
   const query = await dbQueryByFilter(search, roomType, minPrice, maxPrice);
 
   try {
     const rooms = await Room.find(query);
-    res.status(200).json({ data: rooms, success: 1 });
-  } catch (error) {
-    const errMsg = handleError(error);
+    res.status(200).json({ success: 1, data: rooms });
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
@@ -83,8 +76,8 @@ const fetchRoomById = async (req, res) => {
     const room = await Room.findById(id);
 
     res.status(200).json({ success: 1, data: room });
-  } catch (error) {
-    const errMsg = handleError(error);
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
@@ -93,16 +86,15 @@ const create = async (req, res) => {
   const { name, roomType, price } = req.body;
 
   if (!roomTypeExist(roomType, res)) {
-    return res.json({ success: 0, message: "room type does not exist" });
+    return res.json({ error: "room type does not exist" });
   }
 
   try {
     await Room.create({ name, roomType, price });
     res.status(201).json({ success: 1, message: MESSAGES.CREATED });
-  } catch (error) {
-    const errMsg = handleError(error);
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
-    // console.log(error.message, error.name, error.code);
   }
 };
 
@@ -113,8 +105,8 @@ const updateRoom = async (req, res) => {
     await Room.findByIdAndUpdate(id, { ...req.body });
 
     res.status(200).json({ success: 1, message: MESSAGES.UPDATED });
-  } catch (error) {
-    const errMsg = handleError(error);
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
@@ -126,8 +118,8 @@ const deleteRoom = async (req, res) => {
     await Room.findByIdAndDelete(id);
 
     res.status(200).json({ success: 1, message: MESSAGES.DELETED });
-  } catch (error) {
-    const errMsg = handleError(error);
+  } catch (err) {
+    const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };

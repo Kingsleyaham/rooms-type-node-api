@@ -4,7 +4,6 @@ const User = require("../models/user.model");
 const requireAuthorization = async (req, res, next) => {
   const token = req.cookies.jwt;
   const decodedJwt = jwt.decode(token, { complete: true });
-
   const payload = decodedJwt.payload;
 
   if (payload) {
