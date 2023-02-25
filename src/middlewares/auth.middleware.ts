@@ -1,12 +1,18 @@
-const jwt = require("jsonwebtoken");
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { ACCESS_SECRET_TOKEN } from "../constants";
 
-const requireAuth = async (req, res, next) => {
+export const requireAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.cookies.jwt;
 
   //   check json web token exists and is verified
   if (token) {
     try {
-      await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      await jwt.verify(token, ACCESS_SECRET_TOKEN);
       next();
     } catch (error) {
       next(error);
@@ -17,5 +23,3 @@ const requireAuth = async (req, res, next) => {
     });
   }
 };
-
-module.exports = { requireAuth };

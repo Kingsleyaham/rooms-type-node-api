@@ -1,6 +1,6 @@
-const removeQuoteFromString = require("./removeQuote");
+import removeQuoteFromString from "./removeQuote";
 
-const handleError = (error) => {
+const handleError = (error: any) => {
   let errorMsg = "error validating request";
 
   if (error.name === "MongoServerError" && error.code === 11000) {
@@ -33,4 +33,4 @@ const handleError = (error) => {
   return removeQuoteFromString(errorMsg);
 };
 
-module.exports = handleError;
+export default handleError;

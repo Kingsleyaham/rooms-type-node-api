@@ -1,12 +1,12 @@
-const express = require("express");
-const helmet = require("helmet");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const constants = require("./config/constants");
-const router = require("./routes/");
-const { MESSAGES, DATABASE_URL } = require("./config/constants");
+import { Request, Response } from "express";
+import express from "express";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import cors from "cors";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import router from "./routes/";
+import { MESSAGES, DATABASE_URL } from "./constants";
 
 const app = express();
 
@@ -23,7 +23,7 @@ mongoose
       console.log(`server running at http://${host}:${port}`);
     })
   )
-  .catch((err) => console.log(err));
+  .catch((err: any) => console.log(err));
 
 // third-party middleware
 app.use(cors());
@@ -32,12 +32,12 @@ app.use(cookieParser());
 app.use(helmet());
 
 // routes
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: MESSAGES.FETCHED, success: 1 });
 });
 
 app.use("/api/v1", router);
 
-app.get("/*", (req, res) => {
+app.get("/*", (req: Request, res: Response) => {
   res.send("page not found");
 });

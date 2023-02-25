@@ -1,9 +1,31 @@
-const mongoose = require("mongoose");
-const { Schema } = require("mongoose");
-const bcrypt = require("bcrypt");
-const { DATABASES } = require("../config/constants");
+import { Response } from "express";
+import { Model, Schema, model, Types } from "mongoose";
+import bcrypt from "bcrypt";
+import { DATABASES } from "../constants";
 
-const userSchema = new Schema(
+interface IUser {
+  email: string;
+  password: string;
+  role: string;
+}
+
+interface ILoginProps {
+  email: string;
+  password: string;
+  res: Response;
+}
+
+interface ILoginResponse extends IUser {
+  _id: Types.ObjectId;
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+interface UserModel extends Model<IUser> {
+  login: (email: string, password: string, res: any) => Partial<ILoginResponse>;
+}
+
+const userSchema = new Schema<IUser, UserModel>(
   {
     email: {
       type: String,
@@ -39,12 +61,16 @@ userSchema.pre("save", async function (next) {
     const hashedPassword = await bcrypt.hash(this.password, salt);
     this.password = hashedPassword;
     return next();
-  } catch (err) {
+  } catch (err: any) {
     return next(err);
   }
 });
 
-userSchema.statics.login = async function (email, password, res) {
+userSchema.statics.login = async function ({
+  email,
+  password,
+  res,
+}: ILoginProps) {
   try {
     const user = await this.findOne({ email });
 
@@ -58,11 +84,11 @@ userSchema.statics.login = async function (email, password, res) {
     }
 
     throw Error("invalid email or password");
-  } catch (err) {
+  } catch (err: any) {
     res.status(401).json({ error: err.message });
   }
 };
 
-const User = mongoose.model(DATABASES.USER, userSchema);
+const User = model<IUser, UserModel>(DATABASES.USER, userSchema);
 
-module.exports = User;
+export default User;

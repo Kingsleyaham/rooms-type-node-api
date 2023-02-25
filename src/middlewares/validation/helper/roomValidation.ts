@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const roomValidateSchema = Joi.object({
   name: Joi.string().trim().required(),
@@ -6,4 +6,4 @@ const roomValidateSchema = Joi.object({
   price: Joi.number().required().min(0),
 });
 
-module.exports = roomValidateSchema;
+export default roomValidateSchema;

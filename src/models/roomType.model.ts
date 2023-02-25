@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
-const { DATABASES } = require("../config/constants");
+import { Schema, model } from "mongoose";
+import { DATABASES } from "../constants";
 
 const roomTypeSchema = new Schema(
   {
@@ -17,6 +16,6 @@ const roomTypeSchema = new Schema(
   }
 );
 
-const RoomType = mongoose.model(DATABASES.ROOMTYPE, roomTypeSchema);
+const RoomType = model(DATABASES.ROOMTYPE, roomTypeSchema);
 
-module.exports = RoomType;
+export default RoomType;

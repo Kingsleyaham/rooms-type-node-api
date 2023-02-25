@@ -1,12 +1,15 @@
-const jwt = require("jsonwebtoken");
-const { MESSAGES, ACCESS_SECRET_TOKEN } = require("../config/constants");
-const User = require("../models/user.model");
+import { MESSAGES, ACCESS_SECRET_TOKEN } from "../constants";
+import jwt from "jsonwebtoken";
+import User from "../models/user.model";
+import { Types } from "mongoose";
+import { Request, Response } from "express";
 
-const generateAccessToken = (id) => {
+//------------ utility functions -----------------//
+const generateAccessToken = (id: Types.ObjectId) => {
   return jwt.sign({ id }, ACCESS_SECRET_TOKEN, { expiresIn: "7d" });
 };
 
-const setCookie = (cookieName = "", cookieValue, res) => {
+const setCookie = (cookieName: string, cookieValue: any, res: Response) => {
   const maxAge = 3 * 24 * 60 * 60 * 1000;
 
   return res.cookie(cookieName, cookieValue, {
@@ -15,7 +18,9 @@ const setCookie = (cookieName = "", cookieValue, res) => {
   });
 };
 
-const signup = async (req, res) => {
+// -------------------------------------------------- //
+
+export const signup = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
@@ -26,36 +31,30 @@ const signup = async (req, res) => {
     const user = await User.create({ email, password });
 
     res.status(201).json({ success: 1, message: MESSAGES.CREATED });
-  } catch (err) {
+  } catch (err: any) {
     res.status(401).json({ error: err.message });
   }
 };
 
-const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.login(email, password, res);
     if (user) {
-      const token = generateAccessToken(user._id);
+      const token = generateAccessToken(user._id!);
       setCookie("jwt", token, res);
 
       res
         .status(200)
         .json({ success: 1, data: { id: user._id, email: user.email, token } });
     }
-  } catch (err) {
+  } catch (err: any) {
     return res.status(401).json({ error: err.message });
   }
 };
 
-const logout = (req, res) => {
+export const logout = (req: Request, res: Response) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.status(200).json({ success: 1, message: MESSAGES.LOGOUT });
-};
-
-module.exports = {
-  signup,
-  login,
-  logout,
 };

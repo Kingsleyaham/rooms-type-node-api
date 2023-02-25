@@ -1,50 +1,68 @@
-const mongoose = require("mongoose");
+import { Request, Response } from "express";
+import mongoose, { Types } from "mongoose";
+// import { Types } from "mongoose";
+import { MESSAGES } from "../constants";
 const {
   Types: { ObjectId },
 } = mongoose;
-const { MESSAGES } = require("../config/constants");
-const Room = require("../models/room.model");
-const RoomType = require("../models/roomType.model");
-const handleError = require("../utils/handleError");
+import Room from "../models/room.model";
+import RoomType from "../models/roomType.model";
+import handleError from "../utils/handleError";
+
+// interfaces
+
+interface IQueryValues {
+  name?: string;
+  roomType?: unknown;
+  price?: { $gte: number; $lte?: number };
+}
+
+// ----------------------------------- //
 
 // utility functions
 
-const isValidObjectId = (id) => {
-  return ObjectId.isValid(id) && new ObjectId(id).toString() === id;
+const isValidObjectId = (id: Types.ObjectId) => {
+  return ObjectId.isValid(id) && new ObjectId(id) === id;
 };
 
-const getObjectIdByRoomName = async (roomType) => {
+const getObjectIdByRoomName = async (roomType: any, res: Response) => {
   try {
     if (isValidObjectId(roomType)) return roomType;
 
     const roomId = await RoomType.findOne({ name: roomType }).select("_id");
 
     if (!roomId) {
-      const randomId = mongoose.Types.ObjectId();
+      const randomId = new mongoose.Types.ObjectId();
 
       return randomId;
     }
 
     return roomId._id;
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const roomTypeExist = async (roomTypeId, res) => {
+const roomTypeExist = async (roomTypeId: Types.ObjectId, res: Response) => {
   try {
     const typeExist = await RoomType.findById(roomTypeId);
     return typeExist;
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const dbQueryByFilter = async (search, roomType, minPrice, maxPrice) => {
-  const roomTypeVal = await getObjectIdByRoomName(roomType);
-  const query = {};
+const dbQueryByFilter = async (
+  search: any,
+  roomType: unknown,
+  minPrice: any,
+  maxPrice: any,
+  res: Response
+) => {
+  const roomTypeVal = await getObjectIdByRoomName(roomType, res);
+  const query: IQueryValues = {};
 
   if (search) query.name = search.toLowerCase();
   if (roomType) query.roomType = roomTypeVal;
@@ -56,33 +74,39 @@ const dbQueryByFilter = async (search, roomType, minPrice, maxPrice) => {
 
 //-------------------------------------------------------------------//
 
-const fetchRoomsBySearchParams = async (req, res) => {
+export const fetchRoomsBySearchParams = async (req: Request, res: Response) => {
   const { search, roomType, minPrice, maxPrice } = req.query;
 
-  const query = await dbQueryByFilter(search, roomType, minPrice, maxPrice);
+  const query = await dbQueryByFilter(
+    search,
+    roomType,
+    minPrice,
+    maxPrice,
+    res
+  );
 
   try {
     const rooms = await Room.find(query);
     res.status(200).json({ success: 1, data: rooms });
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const fetchRoomById = async (req, res) => {
+export const fetchRoomById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     const room = await Room.findById(id);
 
     res.status(200).json({ success: 1, data: room });
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const create = async (req, res) => {
+export const create = async (req: Request, res: Response) => {
   const { name, roomType, price } = req.body;
 
   if (!roomTypeExist(roomType, res)) {
@@ -92,42 +116,34 @@ const create = async (req, res) => {
   try {
     await Room.create({ name, roomType, price });
     res.status(201).json({ success: 1, message: MESSAGES.CREATED });
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const updateRoom = async (req, res) => {
+export const updateRoom = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
     await Room.findByIdAndUpdate(id, { ...req.body });
 
     res.status(200).json({ success: 1, message: MESSAGES.UPDATED });
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
 };
 
-const deleteRoom = async (req, res) => {
+export const deleteRoom = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
     await Room.findByIdAndDelete(id);
 
     res.status(200).json({ success: 1, message: MESSAGES.DELETED });
-  } catch (err) {
+  } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
   }
-};
-
-module.exports = {
-  fetchRoomsBySearchParams,
-  create,
-  updateRoom,
-  deleteRoom,
-  fetchRoomById,
 };
