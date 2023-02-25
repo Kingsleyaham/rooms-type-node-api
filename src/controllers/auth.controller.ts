@@ -40,7 +40,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.login(email, password, res);
+    const user = User.login(email, password, res);
     if (user) {
       const token = generateAccessToken(user._id!);
       setCookie("jwt", token, res);

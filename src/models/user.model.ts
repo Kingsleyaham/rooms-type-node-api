@@ -66,11 +66,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.statics.login = async function ({
-  email,
-  password,
-  res,
-}: ILoginProps) {
+userSchema.statics.login = async function (email, password, res) {
   try {
     const user = await this.findOne({ email });
 
