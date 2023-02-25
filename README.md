@@ -19,7 +19,7 @@ npm run start
 ```bash
 'POST - {{baseUrl}}/api/v1/auth/register' - create a new user
 'POST - {{baseUrl}}/api/v1/auth/login' - user login route
-'GET - {{baseUrl}}/api/v1/rooms-types' - logout user
+'GET - {{baseUrl}}/api/v1/auth/logout' - logout user
 
 
 'GET - {{baseUrl}}/api/v1/rooms-types' - fetch all room types
