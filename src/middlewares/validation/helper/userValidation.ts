@@ -6,6 +6,7 @@ const userValidateSchema = Joi.object({
     .trim()
     .required(),
   password: Joi.string().required().min(8),
+  role: Joi.string(),
 });
 
 export default userValidateSchema;

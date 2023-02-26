@@ -79,6 +79,11 @@ const signupRouteDoc = {
                 description: "user email",
                 example: "kingsley@gmail.com",
               },
+              role: {
+                type: "string",
+                description: "user role. default is user",
+                example: "admin",
+              },
               password: {
                 type: "string",
                 description: "user password",

@@ -22,14 +22,14 @@ const setCookie = (cookieName: string, cookieValue: any, res: Response) => {
 // -------------------------------------------------- //
 
 export const signup = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   try {
     const userExist = await User.findOne({ email });
     if (userExist) {
       return res.status(401).json({ error: "user already exist" });
     }
-    const user = await User.create({ email, password });
+    const user = await User.create({ email, password, role });
 
     res.status(201).json({ success: 1, message: MESSAGES.CREATED });
   } catch (err: any) {

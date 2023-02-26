@@ -42,9 +42,9 @@ const userSchema = new Schema<IUser, UserModel>(
 
     role: {
       type: String,
-      enum: ["guest", "admin"],
+      enum: ["user", "admin"],
       lowercase: true,
-      default: "guest",
+      default: "user",
     },
   },
   {
