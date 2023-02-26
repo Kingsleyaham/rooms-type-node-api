@@ -21,7 +21,7 @@ router.use(
   validateRoomType,
   roomTypeRoute
 );
-router.use("/user", userRoute);
+router.use("/users", requireAuth, requireAuthorization, userRoute);
 router.use("/auth", validateUser, authRoute);
 
 export default router;

@@ -1,6 +1,6 @@
 # Node Api For Rooms and RoomTypes
 
-This is a working solution of a node api that stores rooms and room types and users can create room types, create a room based, update, deleted room and room types. a user can also fetch a room by id, roomtype, price range etc.
+This is a working solution of a node hotel management system api that stores rooms and room types and users can create room types, create a room based, update, deleted room and room types. a user can also fetch a room by id, roomtype, price range etc.
 
 ## Usage
 
@@ -38,3 +38,13 @@ npm run start
 **_Note: You have to be authenticated i.e login before you can create, edit and delete rooms_**
 
 **_Note: Only an admin can add add, edit and delete room types_**
+
+**_Note: Please remember to create the following in .env file_**
+
+```
+PORT=5000 or any port of your choice
+HOST=localhost
+DATABASE_URI=your database uri
+ACCESS_TOKEN_SECRET=access token to be used in creating jwt token
+
+```

@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import swaggerDoc from "./docs";
 import router from "./routes/";
 import { MESSAGES, DATABASE_URL } from "./constants";
 
@@ -31,12 +33,13 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
 
-// routes
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: MESSAGES.FETCHED, success: 1 });
-});
+const swaggerOptions = {
+  customCss: ".swagger-ui .topbar { display: none }",
+};
 
+// routes
 app.use("/api/v1", router);
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDoc, swaggerOptions));
 
 app.get("/*", (req: Request, res: Response) => {
   res.send("page not found");

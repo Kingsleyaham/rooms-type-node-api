@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import handleError from "../../utils/handleError";
 import roomValidateSchema from "./helper/roomValidation";
+import roomTypeValidateSchema from "./helper/roomTypeValidation";
 import userValidateSchema from "./helper/userValidation";
 
 export const validateUser = async (
@@ -52,7 +53,7 @@ export const validateRoomType = async (
 ) => {
   if (!((req.path == "/" && req.method == "GET") || req.method == "DELETE")) {
     try {
-      await roomValidateSchema.validateAsync({ ...req.body });
+      await roomTypeValidateSchema.validateAsync({ ...req.body });
 
       next();
     } catch (err: any) {

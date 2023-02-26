@@ -98,6 +98,9 @@ export const fetchRoomById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     const room = await Room.findById(id);
+    if (!room) {
+      return res.status(400).json({ error: "invalid room id" });
+    }
 
     res.status(200).json({ success: 1, data: room });
   } catch (err: any) {
@@ -109,8 +112,8 @@ export const fetchRoomById = async (req: Request, res: Response) => {
 export const create = async (req: Request, res: Response) => {
   const { name, roomType, price } = req.body;
 
-  if (!roomTypeExist(roomType, res)) {
-    return res.json({ error: "room type does not exist" });
+  if (!(await roomTypeExist(roomType, res))) {
+    return res.status(401).json({ error: "room type does not exist" });
   }
 
   try {
@@ -126,7 +129,10 @@ export const updateRoom = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    await Room.findByIdAndUpdate(id, { ...req.body });
+    const room = await Room.findByIdAndUpdate(id, { ...req.body });
+    if (!room) {
+      return res.status(400).json({ error: "invalid room id" });
+    }
 
     res.status(200).json({ success: 1, message: MESSAGES.UPDATED });
   } catch (err: any) {
@@ -139,7 +145,10 @@ export const deleteRoom = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    await Room.findByIdAndDelete(id);
+    const room = await Room.findByIdAndDelete(id);
+    if (!room) {
+      return res.status(400).json({ error: "invalid room id" });
+    }
 
     res.status(200).json({ success: 1, message: MESSAGES.DELETED });
   } catch (err: any) {

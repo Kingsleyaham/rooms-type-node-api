@@ -6,8 +6,14 @@ const handleError = (error: any) => {
   if (error.name === "MongoServerError" && error.code === 11000) {
     errorMsg = "resource already exist";
   }
+
+  // && error.message.includes("Cast to ObjectId failed")
   if (error.name === "CastError") {
     errorMsg = error.message;
+  }
+
+  if (error.name === "CastError" && error.kind === "ObjectId") {
+    errorMsg = "invalid id supplied";
   }
 
   if (error.type === "string.email") {
@@ -20,7 +26,7 @@ const handleError = (error: any) => {
   if (error.type === "string.min") {
     errorMsg = "password length must be at least 8 characters long";
   }
-  if (error.type.includes(".base")) {
+  if (error?.type?.includes(".base")) {
     errorMsg = error.message;
   }
 

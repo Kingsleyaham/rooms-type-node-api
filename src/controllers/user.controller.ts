@@ -6,7 +6,7 @@ export const fetchAll = async (req: Request, res: Response) => {
   try {
     const user = await User.find({});
 
-    res.status(200).json({ data: user, success: 1 });
+    res.status(200).json({ success: 1, users: user });
   } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });
@@ -18,7 +18,7 @@ export const fetchUserById = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(id);
 
-    res.status(200).json({ success: 1, data: user });
+    res.status(200).json({ success: 1, user });
   } catch (err: any) {
     const errMsg = handleError(err);
     res.status(401).json({ error: errMsg });

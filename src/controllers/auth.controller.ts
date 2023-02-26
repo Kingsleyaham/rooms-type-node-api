@@ -5,6 +5,7 @@ import { Types } from "mongoose";
 import { Request, Response } from "express";
 
 //------------ utility functions -----------------//
+
 const generateAccessToken = (id: Types.ObjectId) => {
   return jwt.sign({ id }, ACCESS_SECRET_TOKEN, { expiresIn: "7d" });
 };
@@ -26,7 +27,7 @@ export const signup = async (req: Request, res: Response) => {
   try {
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(401).json({ message: "user already exist" });
+      return res.status(401).json({ error: "user already exist" });
     }
     const user = await User.create({ email, password });
 
@@ -40,7 +41,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = User.login(email, password, res);
+    const user = await User.login(email, password, res);
     if (user) {
       const token = generateAccessToken(user._id!);
       setCookie("jwt", token, res);
