@@ -17,7 +17,7 @@ const swaggerDoc = {
   servers: [
     { url: "http://localhost:5000/api/v1", description: "Local server" },
     {
-      url: "https://kingsley-hotel-api.onrender.com/",
+      url: "https://kingsley-hotel-api.onrender.com/api/v1",
       description: "Prod server",
     },
   ],
