@@ -103,7 +103,7 @@ const createRoom = {
   },
 };
 const updateRoomType = {
-  post: {
+  patch: {
     tags: ["rooms-types"],
     summary: "Update room type",
     description: "allows admin to update room type",
@@ -204,7 +204,7 @@ const deleteRoomType = {
             schema: {
               type: "object",
               example: {
-                error: "invalid room id",
+                error: "invalid room type id",
               },
             },
           },
