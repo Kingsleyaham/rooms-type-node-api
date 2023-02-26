@@ -2,6 +2,10 @@ import userDoc from "./userRoute.doc";
 import authDoc from "./authRoute.doc";
 import roomDoc from "./roomRoute.doc";
 import roomTypeDoc from "./roomTypeRoute.doc";
+import dotenv from "dotenv";
+dotenv.config();
+
+const port = process.env.PORT || 5000;
 
 const swaggerDoc = {
   openapi: "3.0.0",
@@ -15,7 +19,10 @@ const swaggerDoc = {
     description: "A Node Js Api for a hotel management system",
   },
   servers: [
-    { url: "http://localhost:5000/api/v1", description: "Local server" },
+    {
+      url: `http://localhost:${port}/api/v1`,
+      description: "Local server",
+    },
     {
       url: "https://kingsley-hotel-api.onrender.com/api/v1",
       description: "Prod server",
