@@ -16,7 +16,10 @@ const swaggerDoc = {
   },
   servers: [
     { url: "http://localhost:5000/api/v1", description: "Local server" },
-    { url: "http://localhost:5000/api/v1", description: "Prod server" },
+    {
+      url: "https://kingsley-hotel-api.onrender.com/",
+      description: "Prod server",
+    },
   ],
   tags: [
     { name: "auth", description: "auth api endpoint" },
