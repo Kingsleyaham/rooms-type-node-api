@@ -33,11 +33,13 @@ This is a working solution of a node hotel management system api that stores roo
 
 ```
 
-**_Note: You have to be authenticated i.e login before you can create, edit and delete rooms_**
+## Important Informations to Note
 
-**_Note: Only an admin can add add, edit and delete room types_**
+1. **_You have to be authenticated i.e login before you can create, edit and delete rooms_**
 
-**_Note: Please remember to create the following in .env file_**
+2. **_Note: Only an admin can add add, edit and delete room types_**
+
+3. **_Note: Please remember to create the following in .env file_**
 
 ```
 PORT=5000 or any port of your choice
@@ -46,3 +48,7 @@ DATABASE_URI=your database uri
 ACCESS_TOKEN_SECRET=access token to be used in creating jwt token
 
 ```
+
+## Live Url
+
+> [Hotel Management System](https://kingsley-hotel-api.onrender.com/)
