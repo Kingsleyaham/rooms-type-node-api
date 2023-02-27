@@ -16,7 +16,8 @@ const swaggerDoc = {
       name: "Aham Kingsley",
       email: "kingsleyaham6@gmail.com",
     },
-    description: "A Node Js Api for a hotel management system",
+    description:
+      "A Hotel Management System Api Using Nodejs, Typescript and ExpressJs. Please Select the right server for the servers dropdown.",
   },
   servers: [
     {
