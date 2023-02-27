@@ -9,7 +9,8 @@ This is a working solution of a node hotel management system api that stores roo
 - use the following command terminal
 
 ```bash
-`npm run dev` if you have nodemon installed
+`npm install` to install the necessary dependencies
+`npm run dev` if you have nodemon installed to start the server
 ```
 
 ## List of Endpoints
