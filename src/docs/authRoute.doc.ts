@@ -81,7 +81,7 @@ const signupRouteDoc = {
               },
               role: {
                 type: "string",
-                description: "user role. default is user",
+                description: "user role. default is guest",
                 example: "admin",
               },
               password: {
