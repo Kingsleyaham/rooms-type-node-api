@@ -13,11 +13,11 @@ const swaggerDoc = {
     title: "Node js Api",
     version: "1.0.0",
     contact: {
-      name: "Aham Kingsley",
       email: "kingsleyaham6@gmail.com",
     },
-    description:
-      "A Hotel Management System Api Using Nodejs, Typescript and ExpressJs. Please Select the right server from the servers dropdown.",
+    description: `A Hotel Management System Api Built Using Nodejs, Typescript and ExpressJs, MongoDb for validation, Joi for validation and Jwt for authtication and authorisation. Note some routes needs authorisation and authentication before you can access them. [Github Repo](https://github.com/Kingsleyaham/rooms-type-node-api). Feel free using and testing our api. Your feedback  and corrections is highly needed  
+    
+    Please Select the right server from the servers dropdown.`,
   },
   servers: [
     {
