@@ -30,8 +30,15 @@ const swaggerDoc = {
   ],
   tags: [
     { name: "auth", description: "auth api endpoint" },
-    { name: "users", description: "users api endpoint" },
-    { name: "rooms", description: "rooms api endpoint" },
+    {
+      name: "users",
+      description: "users api endpoint. Only an admin can access this route",
+    },
+    {
+      name: "rooms",
+      description:
+        "rooms api endpoint. You have to be authenticated. ie logged in to access this route",
+    },
     {
       name: "rooms-types",
       description:

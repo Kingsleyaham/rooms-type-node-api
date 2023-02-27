@@ -10,8 +10,6 @@ This is a working solution of a node hotel management system api that stores roo
 
 ```bash
 `npm run dev` if you have nodemon installed
-or
-npm run start
 ```
 
 ## List of Endpoints

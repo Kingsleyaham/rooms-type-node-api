@@ -44,7 +44,7 @@ const userSchema = new Schema<IUser, UserModel>(
       type: String,
       enum: ["guest", "admin"],
       lowercase: true,
-      default: "user",
+      default: "guest",
     },
   },
   {

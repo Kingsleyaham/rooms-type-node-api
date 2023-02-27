@@ -68,7 +68,6 @@ const signupRouteDoc = {
     summary: "Create user",
     description: "Create a new user",
     requestBody: {
-      required: true,
       content: {
         "application/json": {
           schema: {
