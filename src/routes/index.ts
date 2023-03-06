@@ -16,9 +16,9 @@ const router = Router();
 router.use("/rooms", validateRoom, requireAuth, roomRoute);
 router.use(
   "/rooms-types",
+  validateRoomType,
   requireAuth,
   requireAuthorization,
-  validateRoomType,
   roomTypeRoute
 );
 router.use("/users", requireAuth, requireAuthorization, userRoute);
